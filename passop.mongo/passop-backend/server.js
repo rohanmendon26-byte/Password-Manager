@@ -6,14 +6,15 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+const allowedOrigins = process.env.NODE_ENV === 'production'
+    ? [process.env.FRONTEND_URL || 'https://your-frontend-url.vercel.app']
+    : ['http://localhost:5173', 'http://localhost:3000'];
 
 // =========================
 // MIDDLEWARE
 // =========================
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? ['https://your-frontend-url.vercel.app'] // Update this after deploying frontend
-        : ['http://localhost:5173', 'http://localhost:3000'],
+    origin: allowedOrigins,
     credentials: true
 }));
 app.use(bodyParser.json());
@@ -23,6 +24,10 @@ app.use(express.json());
 // MONGODB CONFIGURATION
 // =========================
 const url = process.env.MONGO_URL;
+if (!url) {
+    console.error('❌ MONGO_URL is not set. Add it to your environment variables before deploying.');
+    process.exit(1);
+}
 const client = new MongoClient(url);
 const dbName = 'passop';
 
@@ -189,7 +194,7 @@ app.delete('/api/passwords/:id', async (req, res) => {
 async function startServer() {
     await connectDB();
     
-    app.listen(port, () => {
+    app.listen(port, '0.0.0.0', () => {
         console.log(`🚀 Server is running on port ${port}`);
     });
 }
