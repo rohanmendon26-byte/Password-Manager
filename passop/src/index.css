@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@layer components {
+  .mycontainer {
+    @apply container px-40 py-16 mx-auto ;
+  }
+}
+
+.Toastify__toast--success {
+    background: #16a34a !important;
+    color: white !important;
+}
+
+.Toastify__toast {
+    border-radius: 12px;
+    font-weight: 500;
+}
