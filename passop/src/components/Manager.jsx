@@ -9,7 +9,7 @@ const Manager = () => {
     // =========================
     // API CONFIGURATION
     // =========================
-    const API_URL = 'http://localhost:3000/api/passwords';
+   const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/passwords`;
 
     // References
     const ref = useRef();
