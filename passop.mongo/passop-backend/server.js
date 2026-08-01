@@ -1,33 +1,24 @@
+// server.js
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const allowedOrigins = process.env.NODE_ENV === 'production'
-    ? [process.env.FRONTEND_URL || 'https://your-frontend-url.vercel.app']
-    : ['http://localhost:5173', 'http://localhost:3000'];
 
 // =========================
 // MIDDLEWARE
 // =========================
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}));
-app.use(bodyParser.json());
+app.use(cors()); // Enable CORS for React frontend
+app.use(bodyParser.json()); // Parse JSON bodies
 app.use(express.json());
 
 // =========================
 // MONGODB CONFIGURATION
 // =========================
-const url = process.env.MONGO_URL;
-if (!url) {
-    console.error('❌ MONGO_URL is not set. Add it to your environment variables before deploying.');
-    process.exit(1);
-}
+const url = process.env.MONGO_URL || 'mongodb://localhost:27017';
 const client = new MongoClient(url);
 const dbName = 'passop';
 
@@ -43,7 +34,7 @@ async function connectDB() {
         console.log('✅ Connected to MongoDB');
         
         db = client.db(dbName);
-        collection = db.collection('passwords');
+        collection = db.collection('passwords'); // Changed from 'documents' to 'passwords'
         
         return true;
     } catch (error) {
@@ -57,10 +48,6 @@ async function connectDB() {
 // =========================
 
 // Health check
-app.get('/', (req, res) => {
-    res.json({ status: 'OK', message: 'PassOP API is running' });
-});
-
 app.get('/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running' });
 });
@@ -98,6 +85,7 @@ app.post('/api/passwords', async (req, res) => {
     try {
         const { site, username, password, id } = req.body;
         
+        // Validation
         if (!site || !username || !password) {
             return res.status(400).json({ 
                 success: false, 
@@ -114,7 +102,7 @@ app.post('/api/passwords', async (req, res) => {
             updatedAt: new Date()
         };
         
-        await collection.insertOne(newPassword);
+        const result = await collection.insertOne(newPassword);
         
         res.status(201).json({ 
             success: true, 
@@ -133,6 +121,7 @@ app.put('/api/passwords/:id', async (req, res) => {
         const { id } = req.params;
         const { site, username, password } = req.body;
         
+        // Validation
         if (!site || !username || !password) {
             return res.status(400).json({ 
                 success: false, 
@@ -194,8 +183,8 @@ app.delete('/api/passwords/:id', async (req, res) => {
 async function startServer() {
     await connectDB();
     
-    app.listen(port, '0.0.0.0', () => {
-        console.log(`🚀 Server is running on port ${port}`);
+    app.listen(port, () => {
+        console.log(`🚀 Server is running on http://localhost:${port}`);
     });
 }
 
@@ -209,4 +198,5 @@ process.on('SIGINT', async () => {
     process.exit(0);
 });
 
+// Start the server
 startServer();
