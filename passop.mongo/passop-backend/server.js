@@ -2,7 +2,6 @@
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const app = express();
@@ -12,7 +11,7 @@ const port = process.env.PORT || 3000;
 // MIDDLEWARE
 // =========================
 app.use(cors()); // Enable CORS for React frontend
-app.use(bodyParser.json()); // Parse JSON bodies
+// Express has built-in JSON parsing. Avoid duplicate body-parser usage.
 app.use(express.json());
 
 // =========================
@@ -84,6 +83,8 @@ app.get('/api/passwords/:id', async (req, res) => {
 app.post('/api/passwords', async (req, res) => {
     try {
         const { site, username, password, id } = req.body;
+
+        console.log('POST /api/passwords - payload:', req.body);
         
         // Validation
         if (!site || !username || !password) {
@@ -103,11 +104,12 @@ app.post('/api/passwords', async (req, res) => {
         };
         
         const result = await collection.insertOne(newPassword);
-        
+        console.log('Mongo insert result:', result);
+
         res.status(201).json({ 
             success: true, 
             message: 'Password saved successfully',
-            data: newPassword 
+            data: { ...newPassword, _id: result.insertedId }
         });
     } catch (error) {
         console.error('Error saving password:', error);
@@ -136,10 +138,12 @@ app.put('/api/passwords/:id', async (req, res) => {
             updatedAt: new Date()
         };
         
+        console.log(`PUT /api/passwords/${id} - payload:`, req.body);
         const result = await collection.updateOne(
             { id: id },
             { $set: updatedPassword }
         );
+        console.log('Mongo update result:', result);
         
         if (result.matchedCount === 0) {
             return res.status(404).json({ success: false, message: 'Password not found' });
@@ -160,8 +164,10 @@ app.put('/api/passwords/:id', async (req, res) => {
 app.delete('/api/passwords/:id', async (req, res) => {
     try {
         const { id } = req.params;
+        console.log(`DELETE /api/passwords/${id}`);
         
         const result = await collection.deleteOne({ id: id });
+        console.log('Mongo delete result:', result);
         
         if (result.deletedCount === 0) {
             return res.status(404).json({ success: false, message: 'Password not found' });
