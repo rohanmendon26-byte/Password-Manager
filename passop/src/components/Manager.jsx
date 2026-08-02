@@ -9,7 +9,7 @@ const Manager = () => {
     // =========================
     // API CONFIGURATION
     // =========================
-    const API_URL = `${import.meta.env.VITE_API_URL || 'https://password-manager-3-zm4q.onrender.com'}/api/passwords`;
+    const API_URL = 'http://localhost:3000/api/passwords';
 
     // References
     const ref = useRef();
@@ -41,7 +41,7 @@ const Manager = () => {
             setLoading(true);
             const response = await fetch(API_URL);
             const result = await response.json();
-
+            
             if (result.success) {
                 setPasswordArray(result.data);
             } else {
@@ -162,7 +162,7 @@ const Manager = () => {
         // EDIT EXISTING PASSWORD
         if (editId) {
             success = await updatePasswordInDB(editId, form);
-
+            
             if (success) {
                 const updatedPasswords = passwordArray.map((item) =>
                     item.id === editId
