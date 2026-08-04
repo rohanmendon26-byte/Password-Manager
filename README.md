@@ -1,111 +1,101 @@
-# Password Manager (passop)
+# 🔐 PassOP - Secure Password Manager
 
-A lightweight password manager frontend built with React + Vite. It provides a clean, responsive UI for managing credentials and integrates client-side encryption so secrets are protected before storage or transmission.
+A full-stack password manager application built with React, Node.js, Express, and MongoDB. Store, manage, and retrieve your passwords securely with an intuitive and responsive interface.
 
-Live demo: https://password-manager-5k5d.vercel.app/
+![PassOP Banner](https://img.shields.io/badge/PassOP-Password_Manager-green?style=for-the-badge)
+![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)
+![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express)
 
-Highlights
-- Built with React + Vite for fast development and build times.
-- Tailwind CSS for utility-first styling.
-- Client-side encryption using crypto-js.
-- Small, dependency-light SPA suitable for local use or connecting to a backend API.
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+![Maintained](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 
-## Stack
-- **Language(s):** JavaScript, HTML, CSS
-- **Framework / runtime:** React (Vite)
-- **Notable libraries:** crypto-js, tailwindcss, react-toastify, lucide-react, uuid
+---
 
-## Features
-- Add, edit, and delete stored credentials (name, username, password, notes).
-- Client-side encryption utilities for protecting stored secrets.
-- Responsive UI with a simple navigation and manager interface.
-- Toast notifications and accessible iconography (react-toastify, lucide-react).
+## 📋 Table of Contents
 
-## Project layout
-Top-level important directory (inside `passop/`):
-```
-passop/
-  public/         static assets (favicon, icons)
-  src/
-    components/   UI components (Navbar, Manager, Footer, ...)
-    main.jsx      app bootstrap
-    index.css      global styles
-  package.json     scripts & dependencies
-  vite.config.js   Vite config
-  .env.example     example environment variables
-```
+- [Features](#-features)
+- [Demo](#-demo)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Installation](#-installation)
+- [Environment Variables](#-environment-variables)
+- [Usage](#-usage)
+- [API Documentation](#-api-documentation)
+- [Deployment](#-deployment)
+- [Project Structure](#-project-structure)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Contact](#-contact)
 
-How it fits together:
-- The Vite-powered React app mounts from `src/main.jsx` and renders the main app (`App.jsx`), with the password management UI implemented in `src/components/Manager.jsx`.
-- UI components use Tailwind classes and lucide-react icons; crypto-js provides encryption helpers.
-- The app can call a backend API if configured (see Environment variables).
+---
 
-## Getting started (development)
-Prerequisites:
-- Node.js (v18+ recommended) and npm
+## ✨ Features
 
-Clone, install, and run locally:
+- 🔒 **Secure Password Storage** - Store passwords with MongoDB encryption
+- ✏️ **CRUD Operations** - Create, Read, Update, and Delete passwords
+- 📋 **One-Click Copy** - Copy website URLs, usernames, and passwords to clipboard
+- 👁️ **Show/Hide Passwords** - Toggle password visibility
+- 📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+- 🎨 **Modern UI** - Clean and intuitive user interface with Tailwind CSS
+- 🔔 **Toast Notifications** - Real-time feedback for all actions
+- 🔗 **Direct Website Access** - Click on saved URLs to open websites
+- 🎯 **Edit Mode** - Edit existing passwords easily
+- ⚡ **Fast & Lightweight** - Optimized performance
+
+---
+
+## 🎥 Demo
+
+**Live Demo:** [PassOP Live](https://password-manager-5k5d.vercel.app/)
+
+**API Endpoint:** [https://passop-backend.onrender.com](https://password-manager-3-zm4q.onrender.com)
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React** 18.x - UI Library
+- **Vite** - Build Tool & Dev Server
+- **Tailwind CSS** - Styling
+- **Lucide React** - Icons
+- **React Toastify** - Notifications
+- **UUID** - Unique ID Generation
+- **Lord Icons** - Animated Icons
+
+### Backend
+- **Node.js** - Runtime Environment
+- **Express.js** - Web Framework
+- **MongoDB** - Database
+- **MongoDB Atlas** - Cloud Database
+- **CORS** - Cross-Origin Resource Sharing
+- **dotenv** - Environment Variables
+- **Body Parser** - Request Parsing
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- **Node.js** (v18.x or higher) - [Download](https://nodejs.org/)
+- **npm** or **yarn** - Comes with Node.js
+- **Git** - [Download](https://git-scm.com/)
+- **MongoDB Atlas Account** - [Sign Up](https://www.mongodb.com/cloud/atlas/register)
+
+---
+
+## 📥 Installation
+
+### 1️⃣ Clone the Repository
+
 ```bash
 git clone https://github.com/rohanmendon26-byte/Password-Manager.git
-cd Password-Manager/passop
-npm install
-npm run dev
-```
-Open the URL shown by Vite (usually http://localhost:5173).
-
-Available npm scripts (from `passop/package.json`):
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production assets
-- `npm run preview` — preview production build locally
-- `npm run lint` — run ESLint
-
-## Environment
-The app reads a Vite environment variable for a backend API URL. Use the example file as a starting point:
-```
-passop/.env.example
-VITE_API_URL=https://example-api-url/
-```
-Copy and create `.env` in `passop/` if you need to point the app at a backend:
-```bash
-cp passop/.env.example passop/.env
-# then edit passop/.env to set VITE_API_URL
-```
-Note: If the app is intended to store passwords locally (e.g., localStorage), confirm whether the backend expects encrypted payloads — the project includes crypto-js so client-side encryption may be used before sending to an API.
-
-## Building for production
-From `passop/`:
-```bash
-npm run build
-# optionally preview the build
-npm run preview
-```
-Deploy the built `dist/` from the `passop` package as a static site to your preferred host (Netlify, Vercel, Render, GitHub Pages, etc.).
-
-## Security notes
-- This repository includes client-side encryption utilities (crypto-js). Client-side encryption does not remove the need for secure backend storage and secure transport (HTTPS).
-- Do not commit secrets or real credentials to the repository. Use environment variables and a secure secret management flow for any API keys.
-- Review any cryptography usage for correct configuration before trusting the app for sensitive data.
-
-## Contributing
-Contributions welcome:
-- Fork the repo and open a PR with changes.
-- Please run the linter and keep code style consistent.
-- If adding features, include tests or a short usage note in the README.
-
-Suggested improvements
-- Add a minimal backend to persist encrypted entries (if not already present).
-- Add unit/integration tests and a CI workflow.
-- Add a privacy/security section documenting encryption algorithms and threat model.
-
-## Troubleshooting
-- If the app fails to reach an API, check `VITE_API_URL` in `passop/.env`.
-- If styles look broken, run a fresh `npm install` and ensure Tailwind is built by Vite.
-
-## License
-Add a license file as appropriate (MIT is common). Example:
-```
-MIT License
-```
-
-## Acknowledgements
-- Vite, React, Tailwind CSS, crypto-js, react-toastify, lucide-react
+cd Password-Manager
