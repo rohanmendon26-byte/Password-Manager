@@ -51,7 +51,7 @@ A full-stack password manager application built with React, Node.js, Express, an
 
 ## 🎥 Demo
 
-**Live Demo:** [PassOP Live](https://password-manager-5k5d.vercel.app/)
+**Live Demo:** [PassOP Live](https://password-manager-df75-xi.vercel.app/)
 
 **API Endpoint:** [https://passop-backend.onrender.com](https://password-manager-3-zm4q.onrender.com)
 
